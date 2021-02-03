@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов» [![Build status][travis-image]][travis-url]
 
 * Студент: [Татьяна Манахова](https://up.htmlacademy.ru/react/6/user/1343593).
-* Наставник: `Неизвестно`.
+* Наставник: [Марк Коваленко](https://up.htmlacademy.ru/react/6/user/1434381).
 
 ---
 
