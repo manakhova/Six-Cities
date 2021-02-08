@@ -5,7 +5,8 @@
   "description": "Личный проект «Шесть городов» от HTML Academy",
   "scripts": {
     "build": "webpack --mode production",
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --open",
+
     "eslint": "eslint --ext .jsx --ext .js src/",
     "test": "npm run eslint"
   },
@@ -23,5 +24,10 @@
   },
   "engines": {
     "node": ">=12.0.0"
+  },
+  "dependencies": {
+    "prop-types": "15.7.2",
+    "react": "16.14.0",
+    "react-dom": "16.14.0"
   }
 }
