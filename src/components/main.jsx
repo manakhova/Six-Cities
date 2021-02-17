@@ -1,11 +1,10 @@
-/* eslint-disable no-lone-blocks */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Card from './card';
 
 const Main = (props) => {
   const {citiesCount} = props;
-  const offers = [1, 2, 3, 4, 5]; { /* масиив чего тут должен быть?*/ }
+  const offers = [1, 2, 3, 4, 5];
 
   return (
     <div className="page page--gray page--main">
