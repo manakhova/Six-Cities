@@ -1,10 +1,8 @@
 /* eslint-disable indent */
 import React from 'react';
 
-const stars = [1, 2, 3, 4, 5];
-
 const NewCommentForm = () => {
-  const [starsChecked, setUserForm] = React.useState([false, false, false, false, false]);
+  const [, setUserForm] = React.useState(false);
   const [userForm, setUserReview] = React.useState({review: ``});
 
   const handleSubmit = (evt) => {
@@ -16,31 +14,56 @@ const NewCommentForm = () => {
     setUserReview({...userForm, review: `${value}`});
   };
 
-  const handleStarClick = (target, id) => {
+  const handleStarClick = (target) => {
     const value = target.checked;
-    setUserForm([...starsChecked.slice(0, id), value, ...starsChecked.slice(id + 1)]);
-    // console.log(target, id);
-    // console.log(starsChecked);
-    // console.log(...starsChecked.slice(0, id));
+    setUserForm(value);
+    // console.log(starChecked);
+    // console.log(target);
   };
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        {stars.map((star, id) => {
-            return (
-            <React.Fragment key={`${id}${star}`}>
-            <input className="form__rating-input visually-hidden" name="rating" value={`${id}`} id={`${star}-stars`} type="radio"
-              checked={starsChecked[id]}
-              onChange={({target}) => handleStarClick(target, id)}/>
-            <label htmlFor={`${star}-stars`} className="reviews__rating-label form__rating-label" title="perfect">
-              <svg className="form__star-image" width="37" height="33">
-                <use xlinkHref="#icon-star"></use>
-              </svg>
-            </label>
-          </React.Fragment>);
-        })}
+        <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio"
+        onChange={({target}) => handleStarClick(target)}/>
+        <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
+            <svg className="form__star-image" width="37" height="33">
+            <use xlinkHref="#icon-star"></use>
+            </svg>
+        </label>
+
+        <input className="form__rating-input visually-hidden" name="rating" value="4" id="4-stars" type="radio"
+        onChange={({target}) => handleStarClick(target)}/>
+        <label htmlFor="4-stars" className="reviews__rating-label form__rating-label" title="good">
+            <svg className="form__star-image" width="37" height="33">
+            <use xlinkHref="#icon-star"></use>
+            </svg>
+        </label>
+
+        <input className="form__rating-input visually-hidden" name="rating" value="3" id="3-stars" type="radio"
+        onChange={({target}) => handleStarClick(target)}/>
+        <label htmlFor="3-stars" className="reviews__rating-label form__rating-label" title="not bad">
+            <svg className="form__star-image" width="37" height="33">
+            <use xlinkHref="#icon-star"></use>
+            </svg>
+        </label>
+
+        <input className="form__rating-input visually-hidden" name="rating" value="2" id="2-stars" type="radio"
+        onChange={({target}) => handleStarClick(target)}/>
+        <label htmlFor="2-stars" className="reviews__rating-label form__rating-label" title="badly">
+            <svg className="form__star-image" width="37" height="33">
+            <use xlinkHref="#icon-star"></use>
+            </svg>
+        </label>
+
+        <input className="form__rating-input visually-hidden" name="rating" value="1" id="1-star" type="radio"
+        onChange={({target}) => handleStarClick(target)}/>
+        <label htmlFor="1-star" className="reviews__rating-label form__rating-label" title="terribly">
+            <svg className="form__star-image" width="37" height="33">
+            <use xlinkHref="#icon-star"></use>
+            </svg>
+        </label>
       </div>
       <textarea className="reviews__textarea form__textarea" id="review" name="review" onInput={handleFieldChange} placeholder="Tell how was your stay, what you like and what can be improved"></textarea>
       <div className="reviews__button-wrapper">
