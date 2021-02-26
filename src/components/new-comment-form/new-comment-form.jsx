@@ -1,6 +1,7 @@
+/* eslint-disable indent */
 import React from 'react';
 
-const stars = [0, 1, 2, 3, 4];
+const stars = [1, 2, 3, 4, 5];
 
 const NewCommentForm = () => {
   const [starsChecked, setUserForm] = React.useState([false, false, false, false, false]);
@@ -15,26 +16,31 @@ const NewCommentForm = () => {
     setUserReview({...userForm, review: `${value}`});
   };
 
+  const handleStarClick = (target, id) => {
+    const value = target.checked;
+    setUserForm([...starsChecked.slice(0, id), value, ...starsChecked.slice(id + 1)]);
+    // console.log(target, id);
+    // console.log(starsChecked);
+    // console.log(...starsChecked.slice(0, id));
+  };
+
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        {stars.map((star, id) => (
-          <>
-            <input key={star} className="form__rating-input visually-hidden" name="rating" value={`${id}`} id={`${id}-stars`} type="radio"
+        {stars.map((star, id) => {
+            return (
+            <React.Fragment key={`${id}${star}`}>
+            <input className="form__rating-input visually-hidden" name="rating" value={`${id}`} id={`${star}-stars`} type="radio"
               checked={starsChecked[id]}
-              onChange={({target}) => {
-                const value = target.checked;
-                setUserForm([...starsChecked.slice(0, id), value, ...starsChecked.slice(id + 1)]);
-                // console.log(starsChecked); кажется, тут что-то идет не так
-              }}/>
-            <label htmlFor={`${star}-stars`} key={star} className="reviews__rating-label form__rating-label" title="perfect">
+              onChange={({target}) => handleStarClick(target, id)}/>
+            <label htmlFor={`${star}-stars`} className="reviews__rating-label form__rating-label" title="perfect">
               <svg className="form__star-image" width="37" height="33">
                 <use xlinkHref="#icon-star"></use>
               </svg>
             </label>
-          </>
-        ))}
+          </React.Fragment>);
+        })}
       </div>
       <textarea className="reviews__textarea form__textarea" id="review" name="review" onInput={handleFieldChange} placeholder="Tell how was your stay, what you like and what can be improved"></textarea>
       <div className="reviews__button-wrapper">
