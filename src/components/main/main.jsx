@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CardList from '../card-list/card-list';
 import Header from '../header/header';
+import Map from '../map/map';
+import {city} from '../../const';
 
 const Main = (props) => {
   const {citiesCount, offers} = props;
@@ -70,7 +72,7 @@ const Main = (props) => {
               <CardList offers={offers}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map city={city} offers={offers}/>
             </div>
           </div>
         </div>
