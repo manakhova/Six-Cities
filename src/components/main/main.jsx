@@ -69,10 +69,12 @@ const Main = (props) => {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <CardList offers={offers}/>
+              <CardList offers={offers} className="cities__places-list tabs__content"/>
             </section>
             <div className="cities__right-section">
-              <Map city={city} offers={offers}/>
+              <section className="cities__map map">
+                <Map city={city} offers={offers}/>
+              </section>
             </div>
           </div>
         </div>

@@ -4,15 +4,15 @@ import {Link} from 'react-router-dom';
 
 
 const Card = (props) => {
-  const {offer, onMouseOverCard} = props;
+  const {cardClassName, divClassName, offer, onMouseOverCard} = props;
   const {id, title, previewImage, price, isPremium, isFavorite, type} = offer;
   return (
-    <article id={`${id}`} className="cities__place-card place-card"
+    <article id={`${id}`} className={`${cardClassName} place-card`}
       onMouseOver={() => onMouseOverCard(id)}
       onMouseOut={() => onMouseOverCard(null)}
     >
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : ``}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${divClassName} place-card__image-wrapper`}>
         <a href="#">
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image" />
         </a>
@@ -37,7 +37,7 @@ const Card = (props) => {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to="/offer/:${id}}">{title}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
@@ -56,6 +56,8 @@ Card.propTypes = {
     type: PropTypes.string.isRequired
   }).isRequired,
   onMouseOverCard: PropTypes.func,
+  cardClassName: PropTypes.string.isRequired,
+  divClassName: PropTypes.string.isRequired,
 };
 
 export default Card;
