@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import CardList from '../card-list/card-list';
 import Comments from '../comment-list/comment-list';
 import Header from '../header/header';
 import {city} from '../../const';
 import Map from '../map/map';
+import NearbyPlaceCard from '../card/proxy/nearby-place-card';
 
 const OfferPage = (props) => {
   const {offers, comments} = props;
@@ -23,6 +24,12 @@ const OfferPage = (props) => {
     isPremium,
     isFavorite,
     type} = offer;
+
+  const [, setActiveCard] = useState(null);
+
+  const handleMouseOverCard = (data) => {
+    setActiveCard(data);
+  };
   return (
     <div className="page">
       <Header/>
@@ -106,7 +113,9 @@ const OfferPage = (props) => {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <CardList offers={nearbyOffers} className="near-places__list"/>
+            <CardList className="near-places__list">
+              {nearbyOffers.map((item, i) => <NearbyPlaceCard offer={item} key={item + i} onMouseOverCard={handleMouseOverCard}/>)}
+            </CardList>
           </section>
         </div>
       </main>
