@@ -1,12 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import CardList from '../card-list/card-list';
 import Header from '../header/header';
 import Map from '../map/map';
 import {city} from '../../const';
+import MainCard from '../card/proxy/main-page-card';
 
 const Main = (props) => {
   const {citiesCount, offers} = props;
+
+  const [, setActiveCard] = useState(null);
+
+  const handleMouseOverCard = (data) => {
+    setActiveCard(data);
+  };
 
   return (
     <div className="page page--gray page--main">
@@ -69,10 +76,14 @@ const Main = (props) => {
                   <li className="places__option" tabIndex="0">Top rated first</li>
                 </ul>
               </form>
-              <CardList offers={offers}/>
+              <CardList className="cities__places-list tabs__content">
+                {offers.map((offer, i) => <MainCard offer={offer} key={offer + i} onMouseOverCard={handleMouseOverCard}/>)}
+              </CardList>
             </section>
             <div className="cities__right-section">
-              <Map city={city} offers={offers}/>
+              <section className="cities__map map">
+                <Map city={city} offers={offers}/>
+              </section>
             </div>
           </div>
         </div>

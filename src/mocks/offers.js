@@ -52,7 +52,7 @@ export default [{
     name: `Marc`
   },
   id: 2,
-  images: [`img/1.png`, `img/2.png`],
+  images: [`img/apartment-01.jpg`, `img/apartment-02.jpg`, `img/apartment-03.jpg`],
   isFavorite: true,
   isPremium: true,
   location: {
@@ -85,7 +85,7 @@ export default [{
     name: `Emma`
   },
   id: 3,
-  images: [`img/1.png`, `img/2.png`],
+  images: [`img/apartment-01.jpg`, `img/apartment-02.jpg`, `img/apartment-03.jpg`],
   isFavorite: false,
   isPremium: true,
   location: {
@@ -118,7 +118,7 @@ export default [{
     name: `Rick`
   },
   id: 4,
-  images: [`img/1.png`, `img/2.png`],
+  images: [`img/apartment-01.jpg`, `img/apartment-02.jpg`, `img/apartment-03.jpg`],
   isFavorite: false,
   isPremium: false,
   location: {

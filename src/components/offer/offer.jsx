@@ -1,12 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Card from '../card/card';
+import CardList from '../card-list/card-list';
 import Comments from '../comment-list/comment-list';
 import Header from '../header/header';
+import {city} from '../../const';
+import Map from '../map/map';
+import NearbyPlaceCard from '../card/proxy/nearby-place-card';
 
 const OfferPage = (props) => {
   const {offers, comments} = props;
-  const offer = offers[0]; // или я должна уже связать оффер с конкретной карточкой?
+  const offer = offers[3]; // как заставить отображаться предложение именно той карточки, на которую нажали?
+  const nearbyOffers = offers.filter((item) => item !== offer);
   const {id,
     bedrooms,
     images,
@@ -20,6 +24,12 @@ const OfferPage = (props) => {
     isPremium,
     isFavorite,
     type} = offer;
+
+  const [, setActiveCard] = useState(null);
+
+  const handleMouseOverCard = (data) => {
+    setActiveCard(data);
+  };
   return (
     <div className="page">
       <Header/>
@@ -96,14 +106,16 @@ const OfferPage = (props) => {
               <Comments comments={comments}/>
             </div>
           </div>
-          <section className="property__map map"></section>
+          <section className="property__map map">
+            <Map city={city} offers={nearbyOffers}/>
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <div className="near-places__list places__list">
-              {offers.map((item, i) => <Card offer={offer} key={offer + i} />)}
-            </div>
+            <CardList className="near-places__list">
+              {nearbyOffers.map((item, i) => <NearbyPlaceCard offer={item} key={item + i} onMouseOverCard={handleMouseOverCard}/>)}
+            </CardList>
           </section>
         </div>
       </main>
