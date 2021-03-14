@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import CardList from '../card-list/card-list';
 import Comments from '../comment-list/comment-list';
 import Header from '../header/header';
-import {city} from '../../const';
+import {cities} from '../../const';
 import Map from '../map/map';
 import NearbyPlaceCard from '../card/proxy/nearby-place-card';
 
 const OfferPage = (props) => {
   const {offers, comments} = props;
-  const offer = offers[3]; // как заставить отображаться предложение именно той карточки, на которую нажали?
+  const offer = offers[1]; // как заставить отображаться предложение именно той карточки, на которую нажали?
+  const city = cities[0];
   const nearbyOffers = offers.filter((item) => item !== offer);
   const {id,
     bedrooms,
