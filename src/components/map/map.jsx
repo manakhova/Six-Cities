@@ -40,12 +40,11 @@ const Map = ({city, offers}) => {
       })
       .addTo(mapRef.current)
       .bindPopup(offer.title);
-
-      return () => {
-        mapRef.current.remove();
-      };
     });
-  }, []);
+    return () => {
+      mapRef.current.remove();
+    };
+  }, [city]);
 
   return (
     <div id="map" style={{height: `100%`}} ref={mapRef}></div>
