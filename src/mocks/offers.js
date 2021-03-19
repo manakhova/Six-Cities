@@ -29,8 +29,8 @@ export default [{
   },
   maxAdults: 4,
   previewImage: `img/apartment-01.jpg`,
-  price: 120,
-  rating: 4.8,
+  price: 140,
+  rating: 3,
   title: `Amsterdam 1`,
   type: `apartment`
 }, {
@@ -63,7 +63,7 @@ export default [{
   maxAdults: 4,
   previewImage: `img/apartment-01.jpg`,
   price: 120,
-  rating: 4.8,
+  rating: 5,
   title: `Amsterdam 2`,
   type: `apartment`
 }, {

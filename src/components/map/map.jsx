@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import "leaflet/dist/leaflet.css";
 
-const Map = ({city, offers}) => {
+const Map = ({city, offers, activeCard}) => {
   const mapRef = useRef();
 
   useEffect(() => {
@@ -31,20 +31,30 @@ const Map = ({city, offers}) => {
         iconSize: [30, 30]
       });
 
-      leaflet.marker({
+      const activeIcon = leaflet.icon({
+        iconUrl: `img/pin-active.svg`,
+        iconSize: [30, 30]
+      });
+
+      const marker = leaflet.marker({
         lat: offer.location.latitude,
         lng: offer.location.longitude
       },
       {
         icon: customIcon
-      })
-      .addTo(mapRef.current)
-      .bindPopup(offer.title);
+      });
+
+      if (activeCard === offer.id) {
+        marker.setIcon(activeIcon);
+      }
+
+      marker.addTo(mapRef.current).bindPopup(offer.title);
     });
+
     return () => {
       mapRef.current.remove();
     };
-  }, [city]);
+  }, [city, activeCard]);
 
   return (
     <div id="map" style={{height: `100%`}} ref={mapRef}></div>
@@ -52,6 +62,7 @@ const Map = ({city, offers}) => {
 };
 
 Map.propTypes = {
+  activeCard: PropTypes.number.isRequired,
   city: PropTypes.shape({
     lat: PropTypes.number.isRequired,
     lng: PropTypes.number.isRequired,
