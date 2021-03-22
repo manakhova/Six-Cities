@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import CardList from '../card-list/card-list';
 import CityList from '../city-list/city-list';
@@ -7,11 +7,20 @@ import Map from '../map/map';
 import MainCard from '../card/proxy/main-page-card';
 import {connect} from 'react-redux';
 import {ActionCreator} from '../../store/action';
+import Sorting from '../sorting/sorting';
+import {SortType} from '../../const';
 
 const Main = (props) => {
-  const {city, setCity, offers, cityOffers, setOffers} = props;
-
-  const [, setActiveCard] = useState(null);
+  const {city,
+    setCity,
+    offers,
+    cityOffers,
+    setOffers,
+    setSortedOffers,
+    activeCard,
+    setActiveCard,
+    sortType,
+    setSortType} = props;
 
   const handleMouseOverCard = (data) => {
     setActiveCard(data);
@@ -21,6 +30,15 @@ const Main = (props) => {
     evt.preventDefault();
     setCity(newCity);
     setOffers(newCity, offers);
+    setSortType(SortType.POPULAR);
+  };
+
+  const handleSortTypeClick = (sort, closeSelect) => (evt) => {
+    evt.preventDefault();
+    setSortType(sort);
+    setSortedOffers(cityOffers, sort);
+
+    closeSelect();
   };
 
   return (
@@ -34,28 +52,14 @@ const Main = (props) => {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{cityOffers.length} places to stay in {city.name}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex="0">
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom">
-                  <li className="places__option places__option--active" tabIndex="0">Popular</li>
-                  <li className="places__option" tabIndex="0">Price: low to high</li>
-                  <li className="places__option" tabIndex="0">Price: high to low</li>
-                  <li className="places__option" tabIndex="0">Top rated first</li>
-                </ul>
-              </form>
+              <Sorting sortType={sortType} onSortTypeClick={handleSortTypeClick}/>
               <CardList className="cities__places-list tabs__content">
                 {(cityOffers).map((offer, i) => <MainCard offer={offer} key={offer + i} onMouseOverCard={handleMouseOverCard}/>)}
               </CardList>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={city} offers={cityOffers}/>
+                <Map activeCard={activeCard} city={city} offers={cityOffers}/>
               </section>
             </div>
           </div>
@@ -66,21 +70,27 @@ const Main = (props) => {
 };
 
 Main.propTypes = {
-  citiesCount: PropTypes.number.isRequired,
+  activeCard: PropTypes.number.isRequired,
   offers: PropTypes.array.isRequired,
   cityOffers: PropTypes.array.isRequired,
   city: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }).isRequired,
+  sortType: PropTypes.string.isRequired,
   setCity: PropTypes.func.isRequired,
   setOffers: PropTypes.func.isRequired,
+  setSortType: PropTypes.func.isRequired,
+  setSortedOffers: PropTypes.func.isRequired,
+  setActiveCard: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
   return {
+    activeCard: state.activeCard,
     city: state.city,
     cityOffers: state.cityOffers,
-    offers: state.offers
+    offers: state.offers,
+    sortType: state.sortType,
   };
 };
 
@@ -90,7 +100,16 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setOffers(city, offers) {
     dispatch(ActionCreator.setOffers(city, offers));
-  }
+  },
+  setSortedOffers(offers, sortType) {
+    dispatch(ActionCreator.setSortedOffers(offers, sortType));
+  },
+  setSortType(sortType) {
+    dispatch(ActionCreator.setSortType(sortType));
+  },
+  setActiveCard(data) {
+    dispatch(ActionCreator.setActiveCard(data));
+  },
 });
 
 export {Main};

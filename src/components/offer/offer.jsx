@@ -115,7 +115,7 @@ const OfferPage = (props) => {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <CardList className="near-places__list">
-              {nearbyOffers.map((item, i) => <NearbyPlaceCard offer={item} key={item + i} onMouseOverCard={handleMouseOverCard}/>)}
+              {nearbyOffers.map((item, i) => <NearbyPlaceCard offer={item} key={item + i} handleMouseOverCard={handleMouseOverCard}/>)}
             </CardList>
           </section>
         </div>

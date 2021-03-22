@@ -9,7 +9,7 @@ const Card = (props) => {
   return (
     <article id={`${id}`} className={`${cardClassName} place-card`}
       onMouseOver={() => onMouseOverCard(id)}
-      onMouseOut={() => onMouseOverCard(null)}
+      onMouseOut={() => onMouseOverCard(0)}
     >
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : ``}
       <div className={`${divClassName} place-card__image-wrapper`}>

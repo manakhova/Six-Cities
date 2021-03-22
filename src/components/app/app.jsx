@@ -8,13 +8,13 @@ import OfferPage from '../offer/offer';
 import NotFoundPage from '../not-found-page/not-found-page';
 
 const App = (props) => {
-  const {citiesCount, offers, comments} = props;
+  const {offers, comments} = props;
 
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <Main citiesCount={citiesCount} offers={offers}/>
+          <Main offers={offers}/>
         </Route>
         <Route exact path="/login">
           <SignInPage />
@@ -34,7 +34,6 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  citiesCount: PropTypes.number.isRequired,
   offers: PropTypes.array.isRequired,
   comments: PropTypes.array.isRequired
 };
