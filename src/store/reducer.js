@@ -1,17 +1,17 @@
 import {ActionType} from './action';
-import offers from "../mocks/offers";
 import {SortType} from "../const";
 
 const initialState = {
-  offers,
+  offers: [],
   city: {
     name: `Paris`,
     lat: 48.856613,
     lng: 2.352222,
     zoom: 12},
-  cityOffers: [].concat(offers).filter((offer) => offer.city.name === `Paris`),
+  cityOffers: [],
   activeCard: 0,
-  sortType: SortType.POPULAR
+  sortType: SortType.POPULAR,
+  isDataLoaded: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -40,6 +40,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         sortType: action.payload
+      };
+    case ActionType.LOAD_OFFERS:
+      return {
+        ...state,
+        offers: action.payload,
+        cityOffers: [].concat(action.payload).filter((offer) => offer.city.name === `Paris`),
+        isDataLoaded: true
       };
   }
 

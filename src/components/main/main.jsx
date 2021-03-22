@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import CardList from '../card-list/card-list';
 import CityList from '../city-list/city-list';
@@ -9,18 +9,22 @@ import {connect} from 'react-redux';
 import {ActionCreator} from '../../store/action';
 import Sorting from '../sorting/sorting';
 import {SortType} from '../../const';
+import LoadingScreen from '../loading-screen/loading-screen';
+import {fetchOffers} from "../../store/api-actions";
 
 const Main = (props) => {
   const {city,
     setCity,
     offers,
-    cityOffers,
     setOffers,
     setSortedOffers,
     activeCard,
+    cityOffers,
     setActiveCard,
     sortType,
-    setSortType} = props;
+    setSortType,
+    isDataLoaded,
+    onLoadData} = props;
 
   const handleMouseOverCard = (data) => {
     setActiveCard(data);
@@ -36,10 +40,23 @@ const Main = (props) => {
   const handleSortTypeClick = (sort, closeSelect) => (evt) => {
     evt.preventDefault();
     setSortType(sort);
-    setSortedOffers(cityOffers, sort);
+    setSortedOffers(offers, sort);
 
     closeSelect();
   };
+
+  useEffect(() => {
+    if (!isDataLoaded) {
+      onLoadData();
+    }
+  }, [isDataLoaded]);
+
+  if (!isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
 
   return (
     <div className="page page--gray page--main">
@@ -81,7 +98,9 @@ Main.propTypes = {
   setOffers: PropTypes.func.isRequired,
   setSortType: PropTypes.func.isRequired,
   setSortedOffers: PropTypes.func.isRequired,
-  setActiveCard: PropTypes.func.isRequired
+  setActiveCard: PropTypes.func.isRequired,
+  isDataLoaded: PropTypes.bool.isRequired,
+  onLoadData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -91,6 +110,7 @@ const mapStateToProps = (state) => {
     cityOffers: state.cityOffers,
     offers: state.offers,
     sortType: state.sortType,
+    isDataLoaded: state.isDataLoaded,
   };
 };
 
@@ -109,6 +129,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setActiveCard(data) {
     dispatch(ActionCreator.setActiveCard(data));
+  },
+  onLoadData() {
+    dispatch(fetchOffers());
   },
 });
 
