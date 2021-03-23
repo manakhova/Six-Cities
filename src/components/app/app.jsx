@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
 import Main from '../main/main';
 import SignInPage from '../sign-in-page/sign-in-page';
@@ -7,23 +6,21 @@ import FavoritesPage from '../favorites/favorites';
 import OfferPage from '../offer/offer';
 import NotFoundPage from '../not-found-page/not-found-page';
 
-const App = (props) => {
-  const {offers, comments} = props;
-
+const App = () => {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <Main offers={offers}/>
+          <Main/>
         </Route>
         <Route exact path="/login">
           <SignInPage />
         </Route>
         <Route exact path="/favorites">
-          <FavoritesPage offers={offers}/>
+          <FavoritesPage/>
         </Route>
         <Route exact path="/offer/:id">
-          <OfferPage offers={offers} comments={comments}/>
+          <OfferPage/>
         </Route>
         <Route>
           <NotFoundPage />
@@ -33,9 +30,6 @@ const App = (props) => {
   );
 };
 
-App.propTypes = {
-  offers: PropTypes.array.isRequired,
-  comments: PropTypes.array.isRequired
-};
+App.propTypes = {};
 
 export default App;
