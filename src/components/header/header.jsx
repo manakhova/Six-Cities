@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
-const Header = () => {
+const Header = ({authorizationStatus, userEmail}) => {
   return (
     <header className="header">
       <div className="container">
@@ -15,8 +17,13 @@ const Header = () => {
                 <Link to="/favorites" className="header__nav-link header__nav-link--profile">
                   <div className="header__avatar-wrapper user__avatar-wrapper">
                   </div>
-                  <span className="header__user-name user__name">
-                      Oliver.conner@gmail.com</span>
+                  {authorizationStatus === `AUTH` ?
+                    <span className="header__user-name user__name">
+                      {userEmail}
+                    </span>
+                    :
+                    <span className="header__login">Sign in</span>
+                  }
                 </Link>
               </li>
             </ul>
@@ -27,4 +34,17 @@ const Header = () => {
   );
 };
 
-export default Header;
+Header.propTypes = {
+  authorizationStatus: PropTypes.string.isRequired,
+  userEmail: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    authorizationStatus: state.authorizationStatus,
+    userEmail: state.userEmail,
+  };
+};
+
+export {Header};
+export default connect(mapStateToProps)(Header);

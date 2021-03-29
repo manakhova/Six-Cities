@@ -1,24 +1,28 @@
 import React from 'react';
-import {Switch, Route, BrowserRouter} from 'react-router-dom';
+import {Switch, Route, Router as BrowserRouter} from 'react-router-dom';
 import Main from '../main/main';
-import SignInPage from '../sign-in-page/sign-in-page';
 import FavoritesPage from '../favorites/favorites';
+import AuthScreen from '../auth-screen/auth-screen';
 import OfferPage from '../offer/offer';
 import NotFoundPage from '../not-found-page/not-found-page';
+import PrivateRoute from '../private-route/private-route';
+import browserHistory from "../../browser-history";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path="/">
           <Main/>
         </Route>
         <Route exact path="/login">
-          <SignInPage />
+          <AuthScreen />
         </Route>
-        <Route exact path="/favorites">
-          <FavoritesPage/>
-        </Route>
+        <PrivateRoute exact
+          path="/favorites"
+          render={() => <FavoritesPage />}
+        >
+        </PrivateRoute>
         <Route exact path="/offer/:id">
           <OfferPage/>
         </Route>

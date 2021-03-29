@@ -27,11 +27,7 @@ const Sorting = (props) => {
       <ul className="places__options places__options--custom" style={{display: `none`}}>
         {Object.values(SortType).map((sort, i) => (
           <li key={sort + i}
-            className={`places__option
-            ${sort === sortType ? `places__option--active` : ``}`}
-            tabIndex="0"
-            onClick={onSortTypeClick(sort, closeSelect)}
-          >
+            className={`places__option ${sort === sortType ? `places__option--active` : ``}`} tabIndex="0" onClick={onSortTypeClick(sort, closeSelect)}>
             {sort}
           </li>
         ))}

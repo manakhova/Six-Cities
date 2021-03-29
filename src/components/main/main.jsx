@@ -10,7 +10,7 @@ import {ActionCreator} from '../../store/action';
 import Sorting from '../sorting/sorting';
 import {SortType} from '../../const';
 import LoadingScreen from '../loading-screen/loading-screen';
-import {fetchOffers} from "../../store/api-actions";
+import {fetchFavorites, fetchOffers} from "../../store/api-actions";
 
 const Main = (props) => {
   const {city,
@@ -24,7 +24,8 @@ const Main = (props) => {
     sortType,
     setSortType,
     isDataLoaded,
-    onLoadData} = props;
+    onLoadData,
+    onLoadFavorites} = props;
 
   const handleMouseOverCard = (data) => {
     setActiveCard(data);
@@ -40,7 +41,7 @@ const Main = (props) => {
   const handleSortTypeClick = (sort, closeSelect) => (evt) => {
     evt.preventDefault();
     setSortType(sort);
-    setSortedOffers(offers, sort);
+    setSortedOffers(cityOffers, sort);
 
     closeSelect();
   };
@@ -48,6 +49,7 @@ const Main = (props) => {
   useEffect(() => {
     if (!isDataLoaded) {
       onLoadData();
+      onLoadFavorites();
     }
   }, [isDataLoaded]);
 
@@ -101,6 +103,7 @@ Main.propTypes = {
   setActiveCard: PropTypes.func.isRequired,
   isDataLoaded: PropTypes.bool.isRequired,
   onLoadData: PropTypes.func.isRequired,
+  onLoadFavorites: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
@@ -132,6 +135,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onLoadData() {
     dispatch(fetchOffers());
+  },
+  onLoadFavorites() {
+    dispatch(fetchFavorites());
   },
 });
 

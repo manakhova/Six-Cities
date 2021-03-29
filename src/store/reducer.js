@@ -1,8 +1,9 @@
 import {ActionType} from './action';
-import {SortType} from "../const";
+import {SortType, AuthorizationStatus} from "../const";
 
 const initialState = {
   offers: [],
+  favorites: [],
   city: {
     name: `Paris`,
     lat: 48.856613,
@@ -11,7 +12,15 @@ const initialState = {
   cityOffers: [],
   activeCard: 0,
   sortType: SortType.POPULAR,
-  isDataLoaded: false
+  isDataLoaded: false,
+  authorizationStatus: AuthorizationStatus.NO_AUTH,
+  userEmail: ``,
+};
+
+const getOffersWithReplacedFavorite = (offers, favorite) => {
+  return offers.map((offer) => {
+    return offer.id === favorite.id ? {...offer, favorite} : offer;
+  });
 };
 
 const reducer = (state = initialState, action) => {
@@ -47,6 +56,26 @@ const reducer = (state = initialState, action) => {
         offers: action.payload,
         cityOffers: [].concat(action.payload).filter((offer) => offer.city.name === `Paris`),
         isDataLoaded: true
+      };
+    case ActionType.REQUIRED_AUTHORIZATION:
+      return {
+        ...state,
+        authorizationStatus: action.payload,
+      };
+    case ActionType.SET_EMAIL:
+      return {
+        ...state,
+        userEmail: action.payload,
+      };
+    case ActionType.LOAD_FAVORITES:
+      return {
+        ...state,
+        favorites: action.payload
+      };
+    case ActionType.CHANGE_OFFER_FAVORITE_STATUS:
+      return {
+        ...state,
+        offers: getOffersWithReplacedFavorite(state.offers, action.payload)
       };
   }
 
