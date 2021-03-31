@@ -7,7 +7,12 @@ export const ActionType = {
   GET_SORTED_OFFERS: `main/getSortedOffers`,
   SET_ACTIVE_CARD: `main/setActiveCard`,
   CHANGE_SORT_TYPE: `main/setSortType`,
-  LOAD_OFFERS: `main/loadOffers`
+  LOAD_OFFERS: `main/loadOffers`,
+  REDIRECT_TO_ROUTE: `main/redirectToRoute`,
+  REQUIRED_AUTHORIZATION: `user/requiredAuthorization`,
+  SET_EMAIL: `user/setEmail`,
+  LOAD_FAVORITES: `user/loadFavorites`,
+  CHANGE_OFFER_FAVORITE_STATUS: `user/changeOfferFavoriteStatus`
 };
 
 export const ActionCreator = {
@@ -34,5 +39,25 @@ export const ActionCreator = {
   loadOffers: (offers) => ({
     type: ActionType.LOAD_OFFERS,
     payload: offers.map((offer) => adaptToClient(offer)),
-  })
+  }),
+  requireAuthorization: (status) => ({
+    type: ActionType.REQUIRED_AUTHORIZATION,
+    payload: status,
+  }),
+  setEmail: (email) => ({
+    type: ActionType.SET_EMAIL,
+    payload: email,
+  }),
+  redirectToRoute: (url) => ({
+    type: ActionType.REDIRECT_TO_ROUTE,
+    payload: url,
+  }),
+  loadFavorites: (favorites) => ({
+    type: ActionType.LOAD_FAVORITES,
+    payload: favorites.map((offer) => adaptToClient(offer)),
+  }),
+  changeOfferFavoriteStatus: (offer) => ({
+    type: ActionType.CHANGE_OFFER_FAVORITE_STATUS,
+    payload: offer
+  }),
 };

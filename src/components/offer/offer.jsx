@@ -31,6 +31,7 @@ const OfferPage = (props) => {
   const handleMouseOverCard = (data) => {
     setActiveCard(data);
   };
+
   return (
     <div className="page">
       <Header/>
