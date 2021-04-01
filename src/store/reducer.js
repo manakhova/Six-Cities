@@ -10,11 +10,13 @@ const initialState = {
     lng: 2.352222,
     zoom: 12},
   cityOffers: [],
-  activeCard: 0,
+  activeOffer: {id: 0},
   sortType: SortType.POPULAR,
   isDataLoaded: false,
   authorizationStatus: AuthorizationStatus.NO_AUTH,
   userEmail: ``,
+  comments: [],
+  nearbyOffers: []
 };
 
 const getOffersWithReplacedFavorite = (offers, favorite) => {
@@ -43,18 +45,24 @@ const reducer = (state = initialState, action) => {
     case ActionType.SET_ACTIVE_CARD:
       return {
         ...state,
-        activeCard: action.payload
+        activeOffer: action.payload
       };
     case ActionType.CHANGE_SORT_TYPE:
       return {
         ...state,
         sortType: action.payload
       };
+    case ActionType.LOAD_ONE_OFFER:
+      return {
+        ...state,
+        activeOffer: action.payload,
+        isDataLoaded: true
+      };
     case ActionType.LOAD_OFFERS:
       return {
         ...state,
         offers: action.payload,
-        cityOffers: [].concat(action.payload).filter((offer) => offer.city.name === `Paris`),
+        cityOffers: [].concat(action.payload).filter((offer) => offer.city.name === state.city.name),
         isDataLoaded: true
       };
     case ActionType.REQUIRED_AUTHORIZATION:
@@ -72,10 +80,25 @@ const reducer = (state = initialState, action) => {
         ...state,
         favorites: action.payload
       };
+    case ActionType.LOAD_NEARBY_OFFERS:
+      return {
+        ...state,
+        nearbyOffers: action.payload
+      };
     case ActionType.CHANGE_OFFER_FAVORITE_STATUS:
       return {
         ...state,
         offers: getOffersWithReplacedFavorite(state.offers, action.payload)
+      };
+    case ActionType.LOAD_COMMENTS:
+      return {
+        ...state,
+        comments: action.payload
+      };
+    case ActionType.ADD_COMMENT:
+      return {
+        ...state,
+        comments: [...state.comments, action.payload]
       };
   }
 

@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "axios": "0.21.1",
+    "dayjs": "1.9.5",
     "history": "4.10.1",
     "leaflet": "1.7.1",
     "prop-types": "15.7.2",

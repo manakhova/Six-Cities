@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import "leaflet/dist/leaflet.css";
 
-const Map = ({city, offers, activeCard}) => {
+const Map = ({city, offers, activeOffer}) => {
   const mapRef = useRef();
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const Map = ({city, offers, activeCard}) => {
         icon: customIcon
       });
 
-      if (activeCard === offer.id) {
+      if (activeOffer.id === offer.id) {
         marker.setIcon(activeIcon);
       }
 
@@ -54,7 +54,7 @@ const Map = ({city, offers, activeCard}) => {
     return () => {
       mapRef.current.remove();
     };
-  }, [city, activeCard]);
+  }, [city, activeOffer]);
 
   return (
     <div id="map" style={{height: `100%`}} ref={mapRef}></div>
@@ -62,7 +62,9 @@ const Map = ({city, offers, activeCard}) => {
 };
 
 Map.propTypes = {
-  activeCard: PropTypes.number.isRequired,
+  activeOffer: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
   city: PropTypes.shape({
     lat: PropTypes.number.isRequired,
     lng: PropTypes.number.isRequired,

@@ -18,7 +18,7 @@ const Main = (props) => {
     offers,
     setOffers,
     setSortedOffers,
-    activeCard,
+    activeOffer,
     cityOffers,
     setActiveCard,
     sortType,
@@ -78,7 +78,7 @@ const Main = (props) => {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map activeCard={activeCard} city={city} offers={cityOffers}/>
+                <Map activeOffer={activeOffer} city={city} offers={cityOffers}/>
               </section>
             </div>
           </div>
@@ -89,7 +89,9 @@ const Main = (props) => {
 };
 
 Main.propTypes = {
-  activeCard: PropTypes.number.isRequired,
+  activeOffer: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
   offers: PropTypes.array.isRequired,
   cityOffers: PropTypes.array.isRequired,
   city: PropTypes.shape({
@@ -108,7 +110,7 @@ Main.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    activeCard: state.activeCard,
+    activeOffer: state.activeOffer,
     city: state.city,
     cityOffers: state.cityOffers,
     offers: state.offers,

@@ -36,3 +36,7 @@ export const AuthorizationStatus = {
   AUTH: `AUTH`,
   NO_AUTH: `NO_AUTH`,
 };
+
+export const MAX_RATING = 5;
+
+export const MAX_COMMENTS_COUNT = 10;
