@@ -6,11 +6,6 @@ export const fetchOffers = () => (dispatch, _getState, api) => (
     .then(({data}) => dispatch(ActionCreator.loadOffers(data)))
 );
 
-export const fetchOfferById = (id) => (dispatch, _getState, api) => (
-  api.get(`/hotels/${id}`)
-    .then(({data}) => dispatch(ActionCreator.loadOneOffer(data)))
-);
-
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(`/login`)
     .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
@@ -58,7 +53,7 @@ export const fetchComments = (id) => (dispatch, _getState, api) => {
 
 export const postComment = (id, {comment, rating}) => (dispatch, _getState, api) => {
   api.post(`/comments/${id}`, {comment, rating})
-      .then(() => dispatch(ActionCreator.addComment({comment, rating})));
+      .then(() => dispatch(fetchComments(id)));
 };
 
 

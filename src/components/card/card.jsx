@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link, useHistory} from 'react-router-dom';
 import {connect} from "react-redux";
-import {getStarRating} from '../../utils';
+import {getStarRating, getOfferType} from '../../utils';
 import {fetchOffers, fetchFavorites, addToFavorites, removeFromFavorite} from "../../store/api-actions";
 
 
@@ -75,7 +75,7 @@ const Card = (props) => {
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{getOfferType(type)}</p>
       </div>
     </article>
   );

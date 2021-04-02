@@ -22,3 +22,7 @@ export const getFilteredComments = (comments) => {
     return new Date(b.date) - new Date(a.date);
   }).slice(0, MAX_COMMENTS_COUNT);
 };
+
+export const getOfferType = (type) => {
+  return type === `room` ? `Privat Room` : type.charAt(0).toUpperCase() + type.slice(1);
+};

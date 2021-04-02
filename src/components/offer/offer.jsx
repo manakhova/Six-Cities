@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
+import {useParams} from 'react-router-dom';
 import {useHistory} from 'react-router-dom';
 import CardList from '../card-list/card-list';
 import Comments from '../comment-list/comment-list';
@@ -9,12 +10,12 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import Header from '../header/header';
 import {connect} from 'react-redux';
 import Map from '../map/map';
-import {getStarRating} from '../../utils';
+import {getStarRating, getOfferType} from '../../utils';
 import NearbyPlaceCard from '../card/proxy/nearby-place-card';
-import {fetchOffers, fetchComments, fetchOfferById, fetchFavorites, addToFavorites, removeFromFavorite, fetchNearbyOffers} from "../../store/api-actions";
+import {fetchOffers, fetchComments, fetchFavorites, addToFavorites, removeFromFavorite, fetchNearbyOffers} from "../../store/api-actions";
 
 const OfferPage = (props) => {
-  const {activeOffer,
+  const {offers,
     city,
     nearbyOffers,
     comments,
@@ -22,31 +23,16 @@ const OfferPage = (props) => {
     onLoadComments,
     onLoadData,
     onLoadNearbyOffers,
-    onLoadDataById,
+    // onLoadDataById,
     onLoadFavorites,
     onRemoveFavorite,
     authorizationStatus,
     isDataLoaded} = props;
 
-
-  const currentOffer = activeOffer;
-
-  const {id,
-    bedrooms,
-    images,
-    title,
-    rating,
-    maxAdults,
-    description,
-    goods,
-    price,
-    host,
-    isPremium,
-    isFavorite,
-    type} = currentOffer;
+  let {id} = useParams();
+  const offerId = Number(id);
 
   const history = useHistory();
-  const nearbyOffersWithCurrent = [...nearbyOffers, currentOffer];
 
   const onFavoriteClick = (evt) => {
     evt.preventDefault();
@@ -67,18 +53,35 @@ const OfferPage = (props) => {
   };
 
   useEffect(() => {
-    onLoadComments(currentOffer.id);
-    onLoadNearbyOffers(currentOffer.id);
+    onLoadComments(offerId);
+    onLoadNearbyOffers(offerId);
     onLoadData();
-    onLoadDataById(currentOffer.id);
     onLoadFavorites();
-  }, []);
+  }, [id]);
 
   if (!isDataLoaded) {
     return (
       <LoadingScreen/>
     );
   }
+
+  const currentOffer = offers.find((offer) => offer.id === offerId);
+
+  const {
+    bedrooms,
+    images,
+    title,
+    rating,
+    maxAdults,
+    description,
+    goods,
+    price,
+    host,
+    isPremium,
+    isFavorite,
+    type} = currentOffer;
+
+  const nearbyOffersWithCurrent = [...nearbyOffers, currentOffer];
 
   return (
     <div className="page">
@@ -118,7 +121,7 @@ const OfferPage = (props) => {
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  {type}
+                  {getOfferType(type)}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
                   {bedrooms}
@@ -158,7 +161,7 @@ const OfferPage = (props) => {
                 </div>
               </div>
               <Comments comments={comments}/>
-              {authorizationStatus === `AUTH` ? <NewCommentForm id={id}/> : null}
+              {authorizationStatus === `AUTH` ? <NewCommentForm id={offerId}/> : null}
             </div>
           </div>
           <section className="property__map map">
@@ -189,7 +192,7 @@ OfferPage.propTypes = {
   nearbyOffers: PropTypes.array.isRequired,
   comments: PropTypes.array.isRequired,
   onLoadData: PropTypes.func.isRequired,
-  onLoadDataById: PropTypes.func.isRequired,
+  // onLoadDataById: PropTypes.func.isRequired,
   onLoadFavorites: PropTypes.func.isRequired,
   onLoadNearbyOffers: PropTypes.func.isRequired,
   onAddFavorite: PropTypes.func.isRequired,
@@ -224,9 +227,9 @@ const mapDispatchToProps = (dispatch) => ({
   onLoadData() {
     dispatch(fetchOffers());
   },
-  onLoadDataById(id) {
-    dispatch(fetchOfferById(id));
-  },
+  // onLoadDataById(id) {
+  //   dispatch(fetchOfferById(id));
+  // },
   onLoadComments(id) {
     dispatch(fetchComments(id));
   },

@@ -18,8 +18,8 @@ export const adaptCommentToServer = (comment) => {
   const adaptedComment = {
     ...comment,
     'date': comment.date,
-    'id': comment.id,
     'rating': comment.rating,
+    'comment': comment.comment
     // 'user': {
     //   'avatar_url': comment.user.avatar,
     //   'id': comment.user.id,

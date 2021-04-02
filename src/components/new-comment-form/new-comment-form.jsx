@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
-import {postComment} from "../../store/api-actions";
+import {postComment, fetchComments} from "../../store/api-actions";
+import {MIN_COMMENT_LENGTH, MAX_COMMENT_LENGTH} from "../../const";
 
 const NewCommentForm = (props) => {
   const {id, onAddComment} = props;
 
-  const [validity, setValidity] = React.useState({star: false});
+  const [validity, setValidity] = React.useState({comment: false, rating: false, formIsActive: true});
   const [userForm, setUserReview] = React.useState({comment: ``, rating: null});
-
-  // console.log(userForm);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -20,18 +19,29 @@ const NewCommentForm = (props) => {
     });
 
     setUserReview({comment: ``, rating: null});
-    setValidity({star: false});
+    setValidity({comment: false, rating: false, formIsActive: true});
 
+    document.querySelector(`.reviews__textarea`).value = ``;
+    document.querySelectorAll(`.form__rating-input`).forEach((item) => {
+      item.checked = false;
+    });
+  };
+
+  const handleFormDisableClick = () => {
+    setValidity({...validity, formIsActive: false});
   };
 
   const handleFieldChange = (evt) => {
     const {value} = evt.target;
     setUserReview({...userForm, comment: `${value}`});
+    if (userForm.comment.length >= MIN_COMMENT_LENGTH) {
+      setValidity({...validity, comment: true});
+    }
   };
 
   const handleStarClick = (target) => {
     const value = target.checked;
-    setValidity({...validity, star: value});
+    setValidity({...validity, rating: value});
     setUserReview({...userForm, rating: Number(target.value)});
   };
 
@@ -79,12 +89,15 @@ const NewCommentForm = (props) => {
           </svg>
         </label>
       </div>
-      <textarea minLength="50" maxLength="300" className="reviews__textarea form__textarea" id="review" name="review" onInput={handleFieldChange} placeholder="Tell how was your stay, what you like and what can be improved" required></textarea>
+      <textarea minLength={`${MIN_COMMENT_LENGTH}`} maxLength={`${MAX_COMMENT_LENGTH}`}
+        className="reviews__textarea form__textarea" id="review" name="review" onInput={handleFieldChange}
+        placeholder="Tell how was your stay, what you like and what can be improved"
+        disabled={validity.formIsActive ? false : true} required></textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
       To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled="">Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" onClick={handleFormDisableClick} disabled={validity.rating && validity.comment ? false : true}>Submit</button>
       </div>
     </form>
   );
@@ -92,6 +105,7 @@ const NewCommentForm = (props) => {
 
 NewCommentForm.propTypes = {
   onAddComment: PropTypes.func.isRequired,
+  onLoadComments: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired
 };
 
@@ -104,6 +118,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   onAddComment(id, comment) {
     dispatch(postComment(id, comment));
+  },
+  onLoadComments(id) {
+    dispatch(fetchComments(id));
   },
 });
 
