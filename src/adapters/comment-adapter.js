@@ -1,5 +1,5 @@
 export const adaptCommentToClient = (comment) => {
-  const adaptedComment = {
+  return {
     ...comment,
     commentText: comment.comment,
     date: comment.date,
@@ -10,23 +10,13 @@ export const adaptCommentToClient = (comment) => {
       name: comment.user.name
     }
   };
-
-  return adaptedComment;
 };
 
 export const adaptCommentToServer = (comment) => {
-  const adaptedComment = {
+  return {
     ...comment,
     'date': comment.date,
     'rating': comment.rating,
     'comment': comment.comment
-    // 'user': {
-    //   'avatar_url': comment.user.avatar,
-    //   'id': comment.user.id,
-    //   'is_pro': comment.user.isPro,
-    //   'name': comment.user.name
-    // }
   };
-
-  return adaptedComment;
 };

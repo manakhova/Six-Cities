@@ -7,7 +7,7 @@ const LoadingScreen = () => {
       <Header/>
       <main className="page__main page__main--index page__main--index-empty">
         <div className="cities">
-          <div className="cities__places-container container">
+          <div className="cities__places-container container loading__container">
             <p>Loading ...</p>
           </div>
         </div>

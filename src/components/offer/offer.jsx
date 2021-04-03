@@ -4,7 +4,7 @@ import {useParams} from 'react-router-dom';
 import {useHistory} from 'react-router-dom';
 import CardList from '../card-list/card-list';
 import Comments from '../comment-list/comment-list';
-// import NotFoundPage from '../not-found-page/not-found-page';
+import NotFoundPage from '../not-found-page/not-found-page';
 import NewCommentForm from '../new-comment-form/new-comment-form';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Header from '../header/header';
@@ -23,7 +23,6 @@ const OfferPage = (props) => {
     onLoadComments,
     onLoadData,
     onLoadNearbyOffers,
-    // onLoadDataById,
     onLoadFavorites,
     onRemoveFavorite,
     authorizationStatus,
@@ -66,6 +65,12 @@ const OfferPage = (props) => {
   }
 
   const currentOffer = offers.find((offer) => offer.id === offerId);
+
+  if (currentOffer === undefined) {
+    return (
+      <NotFoundPage/>
+    );
+  }
 
   const {
     bedrooms,
@@ -192,7 +197,6 @@ OfferPage.propTypes = {
   nearbyOffers: PropTypes.array.isRequired,
   comments: PropTypes.array.isRequired,
   onLoadData: PropTypes.func.isRequired,
-  // onLoadDataById: PropTypes.func.isRequired,
   onLoadFavorites: PropTypes.func.isRequired,
   onLoadNearbyOffers: PropTypes.func.isRequired,
   onAddFavorite: PropTypes.func.isRequired,
@@ -227,9 +231,6 @@ const mapDispatchToProps = (dispatch) => ({
   onLoadData() {
     dispatch(fetchOffers());
   },
-  // onLoadDataById(id) {
-  //   dispatch(fetchOfferById(id));
-  // },
   onLoadComments(id) {
     dispatch(fetchComments(id));
   },

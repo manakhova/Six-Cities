@@ -28,6 +28,7 @@ const NewCommentForm = (props) => {
   };
 
   const handleFormDisableClick = () => {
+    // не получилось с блокировкой, я не понимаю как это сделать
     setValidity({...validity, formIsActive: false});
   };
 
