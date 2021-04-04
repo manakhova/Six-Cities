@@ -10,22 +10,22 @@ import {ActionCreator} from '../../store/action';
 import Sorting from '../sorting/sorting';
 import {SortType} from '../../const';
 import LoadingScreen from '../loading-screen/loading-screen';
-import {fetchFavorites, fetchOffers} from "../../store/api-actions";
+import {fetchOffers} from "../../store/api-actions";
+import {filterByCity, sortOffers} from '../../utils';
+import {getOffers, getCity, getCityOffers, getActiveOffer, getSortType, getLoadedDataStatus} from '../../store/main/selectors';
 
 const Main = (props) => {
   const {city,
     setCity,
     offers,
     setOffers,
-    setSortedOffers,
     activeOffer,
     cityOffers,
     setActiveCard,
     sortType,
     setSortType,
     isDataLoaded,
-    onLoadData,
-    onLoadFavorites} = props;
+    onLoadData} = props;
 
   const handleMouseOverCard = (data) => {
     setActiveCard(data);
@@ -34,22 +34,20 @@ const Main = (props) => {
   const handleClickCity = (newCity) => (evt) => {
     evt.preventDefault();
     setCity(newCity);
-    setOffers(newCity, offers);
+    setOffers(filterByCity(offers, newCity));
     setSortType(SortType.POPULAR);
   };
 
   const handleSortTypeClick = (sort, closeSelect) => (evt) => {
     evt.preventDefault();
-    setSortType(sort);
-    setSortedOffers(cityOffers, sort);
 
+    setSortType(sort);
     closeSelect();
   };
 
   useEffect(() => {
     if (!isDataLoaded) {
       onLoadData();
-      onLoadFavorites();
     }
   }, [isDataLoaded]);
 
@@ -73,7 +71,7 @@ const Main = (props) => {
               <b className="places__found">{cityOffers.length} places to stay in {city.name}</b>
               <Sorting sortType={sortType} onSortTypeClick={handleSortTypeClick}/>
               <CardList className="cities__places-list tabs__content">
-                {(cityOffers).map((offer, i) => <MainCard offer={offer} key={offer + i} onMouseOverCard={handleMouseOverCard}/>)}
+                {(sortOffers(cityOffers, sortType)).map((offer, i) => <MainCard offer={offer} key={offer + i} onMouseOverCard={handleMouseOverCard}/>)}
               </CardList>
             </section>
             <div className="cities__right-section">
@@ -101,21 +99,19 @@ Main.propTypes = {
   setCity: PropTypes.func.isRequired,
   setOffers: PropTypes.func.isRequired,
   setSortType: PropTypes.func.isRequired,
-  setSortedOffers: PropTypes.func.isRequired,
   setActiveCard: PropTypes.func.isRequired,
   isDataLoaded: PropTypes.bool.isRequired,
-  onLoadData: PropTypes.func.isRequired,
-  onLoadFavorites: PropTypes.func.isRequired
+  onLoadData: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
   return {
-    activeOffer: state.activeOffer,
-    city: state.city,
-    cityOffers: state.cityOffers,
-    offers: state.offers,
-    sortType: state.sortType,
-    isDataLoaded: state.isDataLoaded,
+    activeOffer: getActiveOffer(state),
+    city: getCity(state),
+    cityOffers: getCityOffers(state),
+    offers: getOffers(state),
+    sortType: getSortType(state),
+    isDataLoaded: getLoadedDataStatus(state),
   };
 };
 
@@ -123,11 +119,8 @@ const mapDispatchToProps = (dispatch) => ({
   setCity(city) {
     dispatch(ActionCreator.setCity(city));
   },
-  setOffers(city, offers) {
-    dispatch(ActionCreator.setOffers(city, offers));
-  },
-  setSortedOffers(offers, sortType) {
-    dispatch(ActionCreator.setSortedOffers(offers, sortType));
+  setOffers(offers) {
+    dispatch(ActionCreator.setOffers(offers));
   },
   setSortType(sortType) {
     dispatch(ActionCreator.setSortType(sortType));
@@ -137,9 +130,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onLoadData() {
     dispatch(fetchOffers());
-  },
-  onLoadFavorites() {
-    dispatch(fetchFavorites());
   },
 });
 

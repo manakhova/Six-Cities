@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {login} from "../../store/api-actions";
 import Header from '../header/header';
+import {getCity} from '../../store/main/selectors';
 
 
 const AuthScreen = ({onSubmit, city}) => {
@@ -64,7 +65,7 @@ AuthScreen.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    city: state.city,
+    city: getCity(state),
   };
 };
 

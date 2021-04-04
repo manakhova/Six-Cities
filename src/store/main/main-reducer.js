@@ -1,5 +1,5 @@
-import {ActionType} from './action';
-import {SortType, AuthorizationStatus} from "../const";
+import {ActionType} from '../action';
+import {SortType} from "../../const";
 
 const initialState = {
   offers: [],
@@ -10,13 +10,10 @@ const initialState = {
     lng: 2.352222,
     zoom: 12},
   cityOffers: [],
+  sortedOffers: [],
   activeOffer: {id: 0},
   sortType: SortType.POPULAR,
-  isDataLoaded: false,
-  authorizationStatus: AuthorizationStatus.NO_AUTH,
-  userEmail: ``,
-  comments: [],
-  nearbyOffers: []
+  isDataLoaded: false
 };
 
 const getOffersWithReplacedFavorite = (offers, favorite) => {
@@ -25,7 +22,7 @@ const getOffersWithReplacedFavorite = (offers, favorite) => {
   });
 };
 
-const reducer = (state = initialState, action) => {
+const mainReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.CHANGE_CITY:
       return {
@@ -33,11 +30,6 @@ const reducer = (state = initialState, action) => {
         city: action.payload
       };
     case ActionType.GET_OFFERS:
-      return {
-        ...state,
-        cityOffers: action.payload
-      };
-    case ActionType.GET_SORTED_OFFERS:
       return {
         ...state,
         cityOffers: action.payload
@@ -52,12 +44,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         sortType: action.payload
       };
-    case ActionType.LOAD_ONE_OFFER:
-      return {
-        ...state,
-        activeOffer: action.payload,
-        isDataLoaded: true
-      };
     case ActionType.LOAD_OFFERS:
       return {
         ...state,
@@ -65,40 +51,15 @@ const reducer = (state = initialState, action) => {
         cityOffers: [].concat(action.payload).filter((offer) => offer.city.name === state.city.name),
         isDataLoaded: true
       };
-    case ActionType.REQUIRED_AUTHORIZATION:
-      return {
-        ...state,
-        authorizationStatus: action.payload,
-      };
-    case ActionType.SET_EMAIL:
-      return {
-        ...state,
-        userEmail: action.payload,
-      };
     case ActionType.LOAD_FAVORITES:
       return {
         ...state,
         favorites: action.payload
       };
-    case ActionType.LOAD_NEARBY_OFFERS:
-      return {
-        ...state,
-        nearbyOffers: action.payload
-      };
     case ActionType.CHANGE_OFFER_FAVORITE_STATUS:
       return {
         ...state,
         offers: getOffersWithReplacedFavorite(state.offers, action.payload)
-      };
-    case ActionType.LOAD_COMMENTS:
-      return {
-        ...state,
-        comments: action.payload
-      };
-    case ActionType.ADD_COMMENT:
-      return {
-        ...state,
-        comments: [...state.comments, action.payload]
       };
   }
 
@@ -106,4 +67,4 @@ const reducer = (state = initialState, action) => {
 };
 
 
-export {reducer};
+export {mainReducer};

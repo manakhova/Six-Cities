@@ -4,6 +4,7 @@ import {Link, useHistory} from 'react-router-dom';
 import {connect} from "react-redux";
 import {getStarRating, getOfferType} from '../../utils';
 import {fetchOffers, fetchFavorites, addToFavorites, removeFromFavorite} from "../../store/api-actions";
+import {getAuthorizationStatus} from '../../store/auth/selectors';
 
 
 const Card = (props) => {
@@ -104,7 +105,7 @@ Card.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    authorizationStatus: state.authorizationStatus,
+    authorizationStatus: getAuthorizationStatus(state),
   };
 };
 
