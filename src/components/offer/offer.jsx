@@ -58,7 +58,6 @@ const OfferPage = (props) => {
     onLoadComments(offerId);
     onLoadNearbyOffers(offerId);
     onLoadData();
-    onLoadFavorites();
   }, [id]);
 
   if (!isDataLoaded) {
