@@ -5,7 +5,7 @@ import Header from '../header/header';
 import Footer from '../footer/footer';
 import {connect} from 'react-redux';
 import {cities} from '../../const';
-import {filterByCity} from '../../utils'
+import {filterByCity} from '../../utils';
 import {fetchFavorites} from '../../store/api-actions';
 import {getFavorites} from '../../store/main/selectors';
 
