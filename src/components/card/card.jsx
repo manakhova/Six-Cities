@@ -1,29 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import {connect} from "react-redux";
-import {fetchFavorites, addToFavorites, removeFromFavorite} from "../../store/api-actions";
+import {getStarRating, getOfferType} from '../../utils';
+import {fetchOffers, fetchFavorites, addToFavorites, removeFromFavorite} from "../../store/api-actions";
 
 
 const Card = (props) => {
-  const {cardClassName, divClassName, offer, onMouseOverCard, onAddFavorite, onLoadFavorites, onRemoveFavorite} = props;
-  const {id, title, previewImage, price, isPremium, isFavorite, type} = offer;
+  const {cardClassName,
+    divClassName,
+    offer,
+    onMouseOverCard,
+    authorizationStatus,
+    onLoadData,
+    onAddFavorite,
+    onLoadFavorites,
+    onRemoveFavorite} = props;
 
-  const onFavoriteClick = () => {
-    if (isFavorite) {
-      onRemoveFavorite(id);
-      onLoadFavorites();
+  const {id, title, previewImage, price, isPremium, isFavorite, type, rating} = offer;
+
+  const history = useHistory();
+
+  const onFavoriteClick = (evt) => {
+    evt.preventDefault();
+
+    if (authorizationStatus === `AUTH`) {
+      if (isFavorite) {
+        onRemoveFavorite(id);
+        onLoadFavorites();
+        onLoadData();
+      } else {
+        onAddFavorite(id);
+        onLoadFavorites();
+        onLoadData();
+      }
     } else {
-      onAddFavorite(id);
-      onLoadFavorites();
+      history.push(`/login`);
     }
   };
 
 
   return (
     <article id={`${id}`} className={`${cardClassName} place-card`}
-      onMouseOver={() => onMouseOverCard(id)}
-      onMouseOut={() => onMouseOverCard(0)}
+      onMouseOver={() => onMouseOverCard(offer)}
+      onMouseOut={() => onMouseOverCard({id: 0})}
     >
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : ``}
       <div className={`${divClassName} place-card__image-wrapper`}>
@@ -48,14 +68,14 @@ const Card = (props) => {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `100%`}}></span>
+            <span style={{width: `${getStarRating(Math.round(rating))}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{getOfferType(type)}</p>
       </div>
     </article>
   );
@@ -69,14 +89,23 @@ Card.propTypes = {
     price: PropTypes.number.isRequired,
     isPremium: PropTypes.bool.isRequired,
     isFavorite: PropTypes.bool.isRequired,
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired
   }).isRequired,
   onMouseOverCard: PropTypes.func,
   cardClassName: PropTypes.string.isRequired,
   divClassName: PropTypes.string.isRequired,
+  onLoadData: PropTypes.func.isRequired,
   onLoadFavorites: PropTypes.func.isRequired,
   onAddFavorite: PropTypes.func.isRequired,
-  onRemoveFavorite: PropTypes.func.isRequired
+  onRemoveFavorite: PropTypes.func.isRequired,
+  authorizationStatus: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    authorizationStatus: state.authorizationStatus,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -86,6 +115,9 @@ const mapDispatchToProps = (dispatch) => ({
   onRemoveFavorite(id) {
     dispatch(removeFromFavorite(id));
   },
+  onLoadData() {
+    dispatch(fetchOffers());
+  },
   onLoadFavorites() {
     dispatch(fetchFavorites());
   },
@@ -93,5 +125,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 
 export {Card};
-export default connect(null, mapDispatchToProps)(Card);
+export default connect(mapStateToProps, mapDispatchToProps)(Card);
 

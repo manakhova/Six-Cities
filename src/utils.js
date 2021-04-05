@@ -1,4 +1,4 @@
-import {SortType} from "./const";
+import {SortType, MAX_RATING, MAX_COMMENTS_COUNT} from "./const";
 
 export const sortOffers = (offers, sortType) => {
   switch (sortType) {
@@ -11,4 +11,18 @@ export const sortOffers = (offers, sortType) => {
     default:
       return offers;
   }
+};
+
+export const getStarRating = (rating) => {
+  return (rating / MAX_RATING * 100);
+};
+
+export const getFilteredComments = (comments) => {
+  return comments.slice().sort((a, b) => {
+    return new Date(b.date) - new Date(a.date);
+  }).slice(0, MAX_COMMENTS_COUNT);
+};
+
+export const getOfferType = (type) => {
+  return type === `room` ? `Privat Room` : type.charAt(0).toUpperCase() + type.slice(1);
 };
