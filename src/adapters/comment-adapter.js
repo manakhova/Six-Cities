@@ -12,11 +12,3 @@ export const adaptCommentToClient = (comment) => {
   };
 };
 
-export const adaptCommentToServer = (comment) => {
-  return {
-    ...comment,
-    'date': comment.date,
-    'rating': comment.rating,
-    'comment': comment.comment
-  };
-};

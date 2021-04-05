@@ -2,8 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {getAuthorizationStatus, getAuthorizationInfo} from '../../store/auth/selectors';
+import {logout, fetchOffers} from "../../store/api-actions";
 
-const Header = ({authorizationStatus, userEmail}) => {
+const Header = ({authorizationStatus, authorizationInfo, onLogout, onLoadData}) => {
+
+  const onExitButtonClick = () => {
+    onLogout();
+    onLoadData();
+  };
+
   return (
     <header className="header">
       <div className="container">
@@ -14,17 +22,22 @@ const Header = ({authorizationStatus, userEmail}) => {
           <nav className="header__nav">
             <ul className="header__nav-list">
               <li className="header__nav-item user">
-                <Link to="/favorites" className="header__nav-link header__nav-link--profile">
-                  <div className="header__avatar-wrapper user__avatar-wrapper">
-                  </div>
-                  {authorizationStatus === `AUTH` ?
+                {authorizationStatus === `AUTH` ?
+                  <Link to="/favorites" className="header__nav-link header__nav-link--profile">
+                    <div className="header__avatar-wrapper user__avatar-wrapper">
+                    </div>
                     <span className="header__user-name user__name">
-                      {userEmail}
+                      {authorizationInfo.email}
                     </span>
-                    :
+                  </Link> :
+                  <Link to="/login" className="header__nav-link header__nav-link--profile">
+                    <div className="header__avatar-wrapper user__avatar-wrapper">
+                    </div>
                     <span className="header__login">Sign in</span>
-                  }
-                </Link>
+                  </Link>
+                }
+                {authorizationStatus === `AUTH` ?
+                  <button onClick={onExitButtonClick} className="header__nav-link header__nav-link--profile" style={{margin: `7px 0`}}>Logout</button> : null}
               </li>
             </ul>
           </nav>
@@ -36,15 +49,26 @@ const Header = ({authorizationStatus, userEmail}) => {
 
 Header.propTypes = {
   authorizationStatus: PropTypes.string.isRequired,
-  userEmail: PropTypes.string.isRequired,
+  authorizationInfo: PropTypes.object.isRequired,
+  onLogout: PropTypes.func.isRequired,
+  onLoadData: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
   return {
-    authorizationStatus: state.authorizationStatus,
-    userEmail: state.userEmail,
+    authorizationStatus: getAuthorizationStatus(state),
+    authorizationInfo: getAuthorizationInfo(state),
   };
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  onLogout() {
+    dispatch(logout());
+  },
+  onLoadData() {
+    dispatch(fetchOffers());
+  },
+});
+
 export {Header};
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

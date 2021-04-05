@@ -8,9 +8,15 @@ export const sortOffers = (offers, sortType) => {
       return [].concat(offers).sort((offerA, offerB) => offerB.price - offerA.price);
     case SortType.TOP_RATED:
       return [].concat(offers).sort((offerA, offerB) => offerB.rating - offerA.rating);
+    case SortType.POPULAR:
+      return offers;
     default:
       return offers;
   }
+};
+
+export const filterByCity = (offers, city) => {
+  return (offers.filter((offer) => offer.city.name === city.name));
 };
 
 export const getStarRating = (rating) => {

@@ -13,6 +13,9 @@ import Map from '../map/map';
 import {getStarRating, getOfferType} from '../../utils';
 import NearbyPlaceCard from '../card/proxy/nearby-place-card';
 import {fetchOffers, fetchComments, fetchFavorites, addToFavorites, removeFromFavorite, fetchNearbyOffers} from "../../store/api-actions";
+import {getOffers, getCity, getActiveOffer, getLoadedDataStatus} from '../../store/main/selectors';
+import {getAuthorizationStatus} from '../../store/auth/selectors';
+import {getComments, getNearbyOffers} from '../../store/offer/selectors';
 
 const OfferPage = (props) => {
   const {offers,
@@ -208,13 +211,13 @@ OfferPage.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    activeOffer: state.activeOffer,
-    city: state.city,
-    offers: state.offers,
-    nearbyOffers: state.nearbyOffers,
-    authorizationStatus: state.authorizationStatus,
-    isDataLoaded: state.isDataLoaded,
-    comments: state.comments
+    activeOffer: getActiveOffer(state),
+    city: getCity(state),
+    offers: getOffers(state),
+    nearbyOffers: getNearbyOffers(state),
+    authorizationStatus: getAuthorizationStatus(state),
+    isDataLoaded: getLoadedDataStatus(state),
+    comments: getComments(state)
   };
 };
 

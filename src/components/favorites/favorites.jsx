@@ -1,17 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import FavoritesCard from '../card/proxy/favorites-page-card';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import {connect} from 'react-redux';
 import {cities} from "../../const";
+import {fetchFavorites} from "../../store/api-actions";
+import {getFavorites} from '../../store/main/selectors';
 
 const FavoritesPage = (props) => {
-  const {favorites} = props;
+  const {favorites, onLoadFavorites} = props;
 
   const sortByCity = (offers, city) => {
     return [].concat(offers).filter((offer) => offer.city.name === city);
   };
+
+  useEffect(() => {
+    onLoadFavorites();
+  }, []);
 
   return (
     <div className="page">
@@ -59,13 +65,20 @@ const FavoritesPage = (props) => {
 
 FavoritesPage.propTypes = {
   favorites: PropTypes.array.isRequired,
+  onLoadFavorites: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
   return {
-    favorites: state.favorites,
+    favorites: getFavorites(state),
   };
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  onLoadFavorites() {
+    dispatch(fetchFavorites());
+  }
+});
+
 export {FavoritesPage};
-export default connect(mapStateToProps)(FavoritesPage);
+export default connect(mapStateToProps, mapDispatchToProps)(FavoritesPage);

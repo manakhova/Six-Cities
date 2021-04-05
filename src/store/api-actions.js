@@ -23,21 +23,22 @@ export const fetchOffers = () => (dispatch, _getState, api) => (
 
 export const checkAuth = () => (dispatch, _getState, api) => (
   api.get(`/login`)
+    .then(({data}) => dispatch(ActionCreator.setAuthorization(data)))
     .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
     .catch(() => {})
 );
 
 export const login = ({login: email, password}) => (dispatch, _getState, api) => (
   api.post(`/login`, {email, password})
+    .then(({data}) => dispatch(ActionCreator.setAuthorization(data)))
     .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH)))
-    .then(() => dispatch(ActionCreator.setEmail(email)))
     .then(() => dispatch(ActionCreator.redirectToRoute(`/`)))
 );
 
 export const logout = () => (dispatch, _getState, api) => (
   api.get(`/logout`)
     .then(() => dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH)))
-    .then(() => dispatch(ActionCreator.setEmail(``)))
+    .then(() => dispatch(ActionCreator.setAuthorization({})))
     .then(() => dispatch(ActionCreator.redirectToRoute(`/`)))
 );
 

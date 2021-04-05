@@ -36,8 +36,6 @@ const Sorting = (props) => {
   );
 };
 
-// где-то тут повесить обработчик клика по сортировке чтобы менялся актуальный в стейте
-
 Sorting.propTypes = {
   sortType: PropTypes.string.isRequired,
   onSortTypeClick: PropTypes.func.isRequired,
