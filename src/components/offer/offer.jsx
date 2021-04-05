@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {useParams} from 'react-router-dom';
 import {useHistory} from 'react-router-dom';
 import CardList from '../card-list/card-list';
-import Comments from '../comment-list/comment-list';
+import CommentList from '../comment-list/comment-list';
 import NotFoundPage from '../not-found-page/not-found-page';
 import NewCommentForm from '../new-comment-form/new-comment-form';
 import LoadingScreen from '../loading-screen/loading-screen';
@@ -17,7 +17,7 @@ import {getOffers, getCity, getActiveOffer, getLoadedDataStatus} from '../../sto
 import {getAuthorizationStatus} from '../../store/auth/selectors';
 import {getComments, getNearbyOffers} from '../../store/offer/selectors';
 
-const OfferPage = (props) => {
+const Offer = (props) => {
   const {offers,
     city,
     nearbyOffers,
@@ -167,7 +167,7 @@ const OfferPage = (props) => {
                   </p>
                 </div>
               </div>
-              <Comments comments={comments}/>
+              <CommentList comments={comments}/>
               {authorizationStatus === `AUTH` ? <NewCommentForm id={offerId}/> : null}
             </div>
           </div>
@@ -188,7 +188,7 @@ const OfferPage = (props) => {
   );
 };
 
-OfferPage.propTypes = {
+Offer.propTypes = {
   offers: PropTypes.array.isRequired,
   activeOffer: PropTypes.shape({
     id: PropTypes.number.isRequired,
@@ -241,6 +241,6 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-export {OfferPage};
-export default connect(mapStateToProps, mapDispatchToProps)(OfferPage);
+export {Offer};
+export default connect(mapStateToProps, mapDispatchToProps)(Offer);
 

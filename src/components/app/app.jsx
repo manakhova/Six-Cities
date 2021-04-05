@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {Switch, Route, Redirect, Router as BrowserRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Main from '../main/main';
-import FavoritesPage from '../favorites/favorites';
+import Favorites from '../favorites/favorites';
 import AuthScreen from '../auth-screen/auth-screen';
-import OfferPage from '../offer/offer';
+import Offer from '../offer/offer';
 import NotFoundPage from '../not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import browserHistory from "../../browser-history";
@@ -24,10 +24,10 @@ const App = ({authorizationStatus}) => {
         </Route>
         <PrivateRoute exact
           path="/favorites"
-          render={() => <FavoritesPage />}>
+          render={() => <Favorites />}>
         </PrivateRoute>
         <Route exact path="/offer/:id">
-          <OfferPage/>
+          <Offer/>
         </Route>
         <Route>
           <NotFoundPage />

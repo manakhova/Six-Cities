@@ -4,7 +4,7 @@ import CardList from '../card-list/card-list';
 import CityList from '../city-list/city-list';
 import Header from '../header/header';
 import Map from '../map/map';
-import MainCard from '../card/proxy/main-page-card';
+import MainCard from '../card/proxy/main-card';
 import MainEmpty from '../main-empty/main-empty';
 import {connect} from 'react-redux';
 import {ActionCreator} from '../../store/action';

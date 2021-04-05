@@ -4,7 +4,7 @@ import Comment from '../comment/comment';
 import {getFilteredComments} from '../../utils';
 
 
-const Comments = (props) => {
+const CommentList = (props) => {
   const {comments} = props;
   return (
     <section className="property__reviews reviews">
@@ -16,8 +16,8 @@ const Comments = (props) => {
   );
 };
 
-Comments.propTypes = {
+CommentList.propTypes = {
   comments: PropTypes.array.isRequired,
 };
 
-export default Comments;
+export default CommentList;

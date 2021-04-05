@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import FavoritesCard from '../card/proxy/favorites-page-card';
+import FavoritesCard from '../card/proxy/favorites-card';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import {connect} from 'react-redux';
@@ -9,7 +9,7 @@ import {filterByCity} from '../../utils';
 import {fetchFavorites} from '../../store/api-actions';
 import {getFavorites} from '../../store/main/selectors';
 
-const FavoritesPage = (props) => {
+const Favorites = (props) => {
   const {favorites, onLoadFavorites} = props;
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const FavoritesPage = (props) => {
   );
 };
 
-FavoritesPage.propTypes = {
+Favorites.propTypes = {
   favorites: PropTypes.array.isRequired,
   onLoadFavorites: PropTypes.func.isRequired
 };
@@ -77,5 +77,5 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-export {FavoritesPage};
-export default connect(mapStateToProps, mapDispatchToProps)(FavoritesPage);
+export {Favorites};
+export default connect(mapStateToProps, mapDispatchToProps)(Favorites);
