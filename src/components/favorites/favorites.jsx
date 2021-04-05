@@ -4,16 +4,13 @@ import FavoritesCard from '../card/proxy/favorites-page-card';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import {connect} from 'react-redux';
-import {cities} from "../../const";
-import {fetchFavorites} from "../../store/api-actions";
+import {cities} from '../../const';
+import {filterByCity} from '../../utils'
+import {fetchFavorites} from '../../store/api-actions';
 import {getFavorites} from '../../store/main/selectors';
 
 const FavoritesPage = (props) => {
   const {favorites, onLoadFavorites} = props;
-
-  const sortByCity = (offers, city) => {
-    return [].concat(offers).filter((offer) => offer.city.name === city);
-  };
 
   useEffect(() => {
     onLoadFavorites();
@@ -40,7 +37,7 @@ const FavoritesPage = (props) => {
               <h1 className="favorites__title">Saved listing</h1>
               <ul className="favorites__list">
                 {cities.map((city, i) => (
-                  sortByCity(favorites, city.name).length !== 0 ?
+                  filterByCity(favorites, city).length !== 0 ?
                     <li key={city + i} className="favorites__locations-items">
                       <div className="favorites__locations locations locations--current">
                         <div className="locations__item">
@@ -50,9 +47,9 @@ const FavoritesPage = (props) => {
                         </div>
                       </div>
                       <div className="favorites__places">
-                        {sortByCity(favorites, city.name).map((offer, k) => <FavoritesCard onMouseOverCard={() => {}} offer={offer} key={offer + k} />)}
+                        {filterByCity(favorites, city).map((offer, k) => <FavoritesCard onMouseOverCard={() => {}} offer={offer} key={offer + k} />)}
                       </div>
-                    </li> : ``
+                    </li> : null
                 ))}
               </ul>
             </section>

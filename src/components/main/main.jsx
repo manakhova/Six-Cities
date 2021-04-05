@@ -5,6 +5,7 @@ import CityList from '../city-list/city-list';
 import Header from '../header/header';
 import Map from '../map/map';
 import MainCard from '../card/proxy/main-page-card';
+import MainEmpty from '../main-empty/main-empty';
 import {connect} from 'react-redux';
 import {ActionCreator} from '../../store/action';
 import Sorting from '../sorting/sorting';
@@ -64,23 +65,25 @@ const Main = (props) => {
       <main className="page__main page__main--index page__main--index-empty">
         <h1 className="visually-hidden">Cities</h1>
         <CityList city={city} handleClickCity={handleClickCity}/>
-        <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{cityOffers.length} places to stay in {city.name}</b>
-              <Sorting sortType={sortType} onSortTypeClick={handleSortTypeClick}/>
-              <CardList className="cities__places-list tabs__content">
-                {(sortOffers(cityOffers, sortType)).map((offer, i) => <MainCard offer={offer} key={offer + i} onMouseOverCard={handleMouseOverCard}/>)}
-              </CardList>
-            </section>
-            <div className="cities__right-section">
-              <section className="cities__map map">
-                <Map activeOffer={activeOffer} city={city} offers={cityOffers}/>
+        {cityOffers.length === 0 ?
+          <MainEmpty/> :
+          <div className="cities">
+            <div className="cities__places-container container">
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <b className="places__found">{cityOffers.length} places to stay in {city.name}</b>
+                <Sorting sortType={sortType} onSortTypeClick={handleSortTypeClick}/>
+                <CardList className="cities__places-list tabs__content">
+                  {(sortOffers(cityOffers, sortType)).map((offer, i) => <MainCard offer={offer} key={offer + i} onMouseOverCard={handleMouseOverCard}/>)}
+                </CardList>
               </section>
+              <div className="cities__right-section">
+                <section className="cities__map map">
+                  <Map activeOffer={activeOffer} city={city} offers={cityOffers}/>
+                </section>
+              </div>
             </div>
-          </div>
-        </div>
+          </div>}
       </main>
     </div>
   );
