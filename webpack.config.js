@@ -1,13 +1,14 @@
 const path = require('path');
 
 module.exports = {
+    mode: 'development',
     entry: './src/index.js',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'public')
     },
     devServer: {
-        contentBase: path.resolve(__dirname, 'public'),
+        static: path.resolve(__dirname, 'public'),
         open: false,
         port: 1337,
         historyApiFallback: true,
@@ -35,4 +36,7 @@ module.exports = {
         extensions: ['.js', '.jsx']
     },
     devtool: 'source-map',
+    performance: { 
+      hints: false 
+    }
 };
